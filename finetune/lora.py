@@ -17,6 +17,9 @@ from lightning.fabric.utilities import ThroughputMonitor
 wd = Path(__file__).parent.parent.resolve()
 sys.path.append(str(wd))
 
+original_checkpoint_path = "checkpoints/stabilityai/stablelm-base-alpha-3b"
+my_checkpoint_path = "checkpoints/mistralai/Mistral-7B-Instruct-v0.2"
+
 from generate.base import generate
 from lit_gpt.args import EvalArgs, IOArgs, TrainArgs
 from lit_gpt.lora import GPT, Block, Config, lora_filter, mark_only_lora_as_trainable
@@ -47,10 +50,10 @@ def setup(
     lora_mlp: bool = False,
     lora_head: bool = False,
     io: IOArgs = IOArgs(
-        train_data_dir=Path("data/alpaca"),
-        val_data_dir=Path("data/alpaca"),
-        checkpoint_dir=Path("checkpoints/stabilityai/stablelm-base-alpha-3b"),
-        out_dir=Path("out/lora/alpaca"),
+        train_data_dir=Path("data/dummy-te.csv"),
+        val_data_dir=Path("data/dummy-tr.csv"),
+        checkpoint_dir=Path(my_checkpoint_path),
+        out_dir=Path("out/lora/mistral"),
     ),
     train: TrainArgs = TrainArgs(
         save_interval=1000,
