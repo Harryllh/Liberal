@@ -40,47 +40,93 @@ from random import choice, randint
 from string import ascii_lowercase as characters
 from string import digits
 
-def generate_dataset(size, save_path, split):
-  # save_path="/wynton/protected/home/yala/yiyan/pathology_all/data_ft/dummy-df.csv"
-  df = pd.DataFrame(columns=["Accession Number", "Report", "Prompt", "Response", "Question", "Input"])
-  for i in range(size):
-    df_current = pd.DataFrame(columns=["Accession Number", "Report", "Prompt", "Response", "Question", "Input"])
-    count = randint(500, 1000)
-    report = ''.join(choice(characters) for _ in range(count))
-    report = f"""
-    ### Pathology Report: 
-    {report}"""
-    id = ''.join(choice(digits) for _ in range(8))
+# def generate_dataset(size, save_path, split):
+#   # save_path="/wynton/protected/home/yala/yiyan/pathology_all/data_ft/dummy-df.csv"
+#   df = pd.DataFrame(columns=["Accession Number", "Report", "Prompt", "Response", "Question", "Input"])
+#   for i in range(size):
+#     df_current = pd.DataFrame(columns=["Accession Number", "Report", "Prompt", "Response", "Question", "Input"])
+#     count = randint(500, 1000)
+#     report = ''.join(choice(characters) for _ in range(count))
+#     report = f"""
+#     ### Pathology Report: 
+#     {report}"""
+#     id = ''.join(choice(digits) for _ in range(8))
 
-    label_1 = np.random.choice(np.arange(1, 6), p=np.ones(5) / 5)
-    label_2 = np.random.choice(np.arange(3), p=[0.3, 0.6, 0.1])
-    if split=="test":
-      df_current.loc[0, :] = [id, report, question_1, label_1, 1, prefix + report + question_1]
-      df_current.loc[1, :] = [id, report, question_2, label_2, 2, prefix + report + question_2]
-    else:
-      df_current.loc[0, :] = [id, report, question_1, label_1, 1, prefix + report + question_1 + str(label_1)]
-      df_current.loc[1, :] = [id, report, question_2, label_2, 2, prefix + report + question_2 + str(label_2)]
+#     label_1 = np.random.choice(np.arange(1, 6), p=np.ones(5) / 5)
+#     label_2 = np.random.choice(np.arange(3), p=[0.3, 0.6, 0.1])
+#     if split=="test":
+#       df_current.loc[0, :] = [id, report, question_1, label_1, 1, prefix + report + question_1]
+#       df_current.loc[1, :] = [id, report, question_2, label_2, 2, prefix + report + question_2]
+#     else:
+#       df_current.loc[0, :] = [id, report, question_1, label_1, 1, prefix + report + question_1 + str(label_1)]
+#       df_current.loc[1, :] = [id, report, question_2, label_2, 2, prefix + report + question_2 + str(label_2)]
     
-    if label_2 == 1:
-      type_idx = np.random.choice(np.arange(k), p=np.ones(k) / k)
-      for j in range(k):
-        if k == type_idx:
-          label_3 = 1
-        else:
-          label_3 = 0
-        if split=="test":
-          df_current.loc[df_current.shape[0], :] = [id, report, combs[j+1], label_3, 3, prefix + report + combs[j+1]]
-        else:
-          df_current.loc[df_current.shape[0], :] = [id, report, combs[j+1], label_3, 3, prefix + report + combs[j+1] + str(label_3)]
-    df = pd.concat([df, df_current])
+#     if label_2 == 1:
+#       type_idx = np.random.choice(np.arange(k), p=np.ones(k) / k)
+#       for j in range(k):
+#         if k == type_idx:
+#           label_3 = 1
+#         else:
+#           label_3 = 0
+#         if split=="test":
+#           df_current.loc[df_current.shape[0], :] = [id, report, combs[j+1], label_3, 3, prefix + report + combs[j+1]]
+#         else:
+#           df_current.loc[df_current.shape[0], :] = [id, report, combs[j+1], label_3, 3, prefix + report + combs[j+1] + str(label_3)]
+#     df = pd.concat([df, df_current])
       
-    # print('\nTotal dimension of df and df_cur: {} {}\n'.format(df, df_current))
-  df.to_csv(save_path)
-  print(f'\n {df.shape}')
-  return df
+#     # print('\nTotal dimension of df and df_cur: {} {}\n'.format(df, df_current))
+#   df.to_json(save_path)
+#   print(f'\n {df.shape}')
+#   return df
+
+import pandas as pd
+import numpy as np
+from random import randint, choice
+
+def generate_dataset(size, save_path, split):
+    df = pd.DataFrame(columns=["Accession Number", "Report", "Prompt", "Response", "Question", "Input"])
+    for i in range(size):
+        df_current = pd.DataFrame(columns=["Accession Number", "Report", "Prompt", "Response", "Question", "Input"])
+        count = randint(500, 1000)
+        report = ''.join(choice(characters) for _ in range(count))
+        report = f"""
+        ### Pathology Report: 
+        {report}"""
+        id = ''.join(choice(digits) for _ in range(8))
+
+        label_1 = np.random.choice(np.arange(1, 6), p=np.ones(5) / 5)
+        label_2 = np.random.choice(np.arange(3), p=[0.3, 0.6, 0.1])
+        if split=="test":
+            df_current.loc[0, :] = [id, report, question_1, label_1, 1, prefix + report + question_1]
+            df_current.loc[1, :] = [id, report, question_2, label_2, 2, prefix + report + question_2]
+        else:
+            df_current.loc[0, :] = [id, report, question_1, label_1, 1, prefix + report + question_1 + str(label_1)]
+            df_current.loc[1, :] = [id, report, question_2, label_2, 2, prefix + report + question_2 + str(label_2)]
+
+        if label_2 == 1:
+            type_idx = np.random.choice(np.arange(k), p=np.ones(k) / k)
+            for j in range(k):
+                if k == type_idx:
+                    label_3 = 1
+                else:
+                    label_3 = 0
+                if split=="test":
+                    df_current.loc[df_current.shape[0], :] = [id, report, combs[j+1], label_3, 3, prefix + report + combs[j+1]]
+                else:
+                    df_current.loc[df_current.shape[0], :] = [id, report, combs[j+1], label_3, 3, prefix + report + combs[j+1] + str(label_3)]
+        df = pd.concat([df, df_current])
+
+    df.reset_index(inplace=True)
+    df.to_json(save_path)
+    print(f'\n {df.shape}')
+    return df
+
+# Example usage:
+# generate_dataset(100, "path_to_your_json_file.json", "train")
+
 
 
 # pdb.set_trace()
-df_tr = generate_dataset(100,"dummy-tr.csv", "train")
-df_val = generate_dataset(30,"dummy-val.csv", "val")
-df_te = generate_dataset(30,"dummy-te.csv", "test")
+df_tr = generate_dataset(100,"dummy-tr.json", "train")
+df_val = generate_dataset(30,"dummy-val.json", "val")
+df_te = generate_dataset(30,"dummy-te.json", "test")
